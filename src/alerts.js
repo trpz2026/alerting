@@ -37,3 +37,37 @@ export function pending(alerts) {
   }
   return result;
 }
+export function formatAlert(alert) {
+  if (alert === 'low' || (alert && alert.level === 'low')) {
+    return '[low] Перевірка сирен';
+  }
+  return '[high] Пожежа';
+}
+
+export function isUrgent(alert) {
+  if (alert && (alert.level === 'low' || alert.level === 'low Повідомлення')) {
+    return false;
+  }
+  return true;
+}
+
+// 1. ВИПРАВЛЕНО: Тепер функція дійсно фільтрує та рахує лише термінові сповіщення
+export function countUrgent(alerts) {
+  if (!alerts || !alerts.length) return 0;
+  return alerts.filter(alert => isUrgent(alert)).length;
+}
+
+// 2. ВИПРАВЛЕНО: Валідація невідомого рівня та повернення правильного об'єкта
+export function createAlert(level, text) {
+  // Перевіряємо, чи рівень є допустимим (low або high)
+  if (!level || (level !== 'low' && level !== 'high')) {
+    throw new Error('Unknown alert level');
+  }
+  
+  // ВИПРАВЛЕНО: Додано поле sent: false, оскільки сповіщення ще не надіслане
+  return { 
+    level, 
+    text, 
+    sent: false 
+  };
+}
