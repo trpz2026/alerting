@@ -28,6 +28,7 @@ export function createAlert(level, text) {
   }
   return { level: level, text: text, sent: false };
 }
+
 export function pending(alerts) {
   const result = [];
   for (const alert of alerts) {
@@ -36,4 +37,13 @@ export function pending(alerts) {
     }
   }
   return result;
+}
+
+// Наша функція formatShort для Картки 9:
+export function formatShort(alert, max) {
+  const str = String(alert);
+  if (str.length <= max) {
+    return alert;
+  }
+  return str.slice(0, max - 3) + '...';
 }
